@@ -1,0 +1,30 @@
+{
+  "name": "caption-canvas-api",
+  "version": "1.0.0",
+  "description": "The backend for Caption Canvas, a platform for users to participate in a photo caption contest",
+  "main": "server.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Abdihakim-Muhumed/Caption-Canvas-API.git"
+  },
+  "keywords": [
+    "Nodejs",
+    "Express",
+    "Postgresql",
+    "Sequelize",
+    "Photo",
+    "Caption",
+    "Contest",
+    "Canvas",
+    "API"
+  ],
+  "author": "Abdihakim Muhumed",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Abdihakim-Muhumed/Caption-Canvas-API/issues"
+  },
+  "homepage": "https://github.com/Abdihakim-Muhumed/Caption-Canvas-API#readme"
+}
