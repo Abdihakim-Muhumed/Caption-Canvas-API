@@ -1,6 +1,6 @@
 const express = require('express');
 const db = require('./app/models')
-
+const photoRouter = require('./app/routes/photo.routes');
 const app = express();
 
 
@@ -13,6 +13,8 @@ db.sequelize.sync().then(() => {
 app.get('/', (req, res) => {
     res.send("Welcome to Caption Canvas API!")
 });
+
+app.use('/api/photos/', photoRouter);
 
 const PORT = 3000
 app.listen(PORT, () => {
