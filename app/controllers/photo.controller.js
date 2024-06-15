@@ -7,16 +7,25 @@ const getAllPhotos = async (req, res) => {
     res.status(200).json(photos);
 }
 
-/*
-const getPhotoById = async (req, res) => {
-    const photo  = await Photo.findByPk(req.query.photoId);
-
-    if(photo){
-        res.status(200).json(photo);
-    }
+const getPhotoById =  (req, res) => {
+    Photo.findByPk(req.params.id)
+    .then(photo => {
+        if(photo === null) {
+            res.status(404).send({
+                message: "Photo not found!"
+            })
+        }
+        res.status(200).json({
+            photo: photo,
+        })
+    })
+    .catch(err => {
+        res.status(500).send({
+            message: err.message
+        })
+    });
 
 }
-*/
 const addPhoto = (req, res) => {
     const {photo_url, description} = req.query
 
@@ -25,7 +34,7 @@ const addPhoto = (req, res) => {
         description:description
     })
     .then(photo => {
-        res.status(200).json({
+        res.status(201).json({
             photo: photo
         })
     })
@@ -38,5 +47,6 @@ const addPhoto = (req, res) => {
 
 module.exports = {
     getAllPhotos,
-    addPhoto
+    addPhoto,
+    getPhotoById
 }
