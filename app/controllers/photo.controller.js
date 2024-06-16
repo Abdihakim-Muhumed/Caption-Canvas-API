@@ -1,5 +1,6 @@
 const db = require("../models");
 const Photo = db.photo;
+const Caption = db.caption;
 
 
 const getAllPhotos = async (req, res) => {
@@ -15,9 +16,14 @@ const getPhotoById =  (req, res) => {
                 message: "Photo not found!"
             })
         }
-        res.status(200).json({
-            photo: photo,
+
+        photo.getCaptions().then(captions => {
+            res.status(200).json({
+                photo: photo,
+                captions: captions
+            })
         })
+        
     })
     .catch(err => {
         res.status(500).send({
