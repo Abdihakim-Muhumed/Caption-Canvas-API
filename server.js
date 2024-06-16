@@ -1,6 +1,7 @@
 const express = require('express');
 const db = require('./app/models')
 const photoRouter = require('./app/routes/photo.routes');
+const captionRouter = require('./app/routes/caption.routes')
 const app = express();
 
 
@@ -15,6 +16,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/photos/', photoRouter);
+app.use('/api/captions/',captionRouter);
 
 const PORT = 3000
 app.listen(PORT, () => {
