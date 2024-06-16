@@ -32,8 +32,13 @@ db.user.belongsToMany(db.role,{
 });
 
 db.photo.hasMany(db.caption);
+db.caption.belongsTo(db.photo);
+
 db.user.hasMany(db.caption);
+db.caption.belongsTo(db.user);
+
 db.user.hasMany(db.photo);
+db.photo.belongsTo(db.user);
 
 module.exports = db;
 try{
