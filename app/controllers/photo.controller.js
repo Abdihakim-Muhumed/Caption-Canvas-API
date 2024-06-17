@@ -51,8 +51,40 @@ const addPhoto = (req, res) => {
     });
 }
 
+const deletePhoto = (req, res) => {
+    Photo.findByPk(req.params.photoId)
+    .then(photo => {
+        if(!photo){
+            res.status(403).json({
+                message: "Invalid photo id"
+            })
+        }
+        photo.destroy({
+            truncate: true
+        })
+        .then(() => {
+            res.status(200).json({
+                message: "Photo successfully deleted!"
+            })
+        })
+        .catch(err => {
+            res.status(500).json({
+                message: err.message
+            })
+        })
+        
+    })
+    .catch(err => {
+        res.status(500).json({
+            message: err.message
+        })
+    })
+    
+}
+
 module.exports = {
     getAllPhotos,
     addPhoto,
-    getPhotoById
+    getPhotoById,
+    deletePhoto
 }
