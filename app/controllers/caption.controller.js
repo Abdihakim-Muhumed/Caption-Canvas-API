@@ -50,8 +50,38 @@ const addNewCaption = (req, res) => {
 
 }
 
+const updateCaption = (req, res) => {
+
+    Caption.findByPk(req.params.captionId)
+    .then( caption => {
+        if(!caption){
+            res.status(404).json({
+                message: "Caption not found!"
+            })
+        }
+        caption.update({
+            body: req.query.captionBody
+        })
+        .then(caption =>{
+            res.status(201).json({
+                caption: caption
+            })
+        })
+        .catch(err => {
+            res.status(500).json({
+                message: err.message
+            })
+        })
+    })
+    .catch(err => {
+        res.status(500).json({
+            message: err.message
+        })
+    })
+}
 
 module.exports = {
     getPhotoCaptions,
     addNewCaption,
+    updateCaption
 }
