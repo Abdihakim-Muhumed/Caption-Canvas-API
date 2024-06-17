@@ -9,7 +9,7 @@ const getAllPhotos = async (req, res) => {
 }
 
 const getPhotoById =  (req, res) => {
-    Photo.findByPk(req.params.id)
+    Photo.findByPk(req.params.photoId)
     .then(photo => {
         if(photo === null) {
             res.status(404).send({
@@ -17,12 +17,18 @@ const getPhotoById =  (req, res) => {
             })
         }
 
-        photo.getCaptions().then(captions => {
+        photo.getCaptions()
+        .then(captions => {
             res.status(200).json({
                 photo: photo,
                 captions: captions
             })
         })
+        .catch(err => {
+            res.status(500).send({
+                message: err.message
+            })
+        });
         
     })
     .catch(err => {
