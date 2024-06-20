@@ -23,6 +23,7 @@ const signUp = (req, res) => {
                 }
             })
             .then(roles => {
+                console.log(roles)
                 user.setRoles(roles)
                 .then(() => {
                     res.status(201).json({
