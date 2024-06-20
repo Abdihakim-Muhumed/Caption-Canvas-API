@@ -22,6 +22,7 @@ const getPhotoCaptions = (req, res) => {
 const addNewCaption = (req, res) => {
     const captionBody = req.query.captionBody;
     const photoId = req.params.photoId;
+    const userId = req.headers["user-id"];
 
     Photo.findByPk(photoId)
     .then(photo => {
@@ -32,7 +33,8 @@ const addNewCaption = (req, res) => {
         }
         Caption.create({
             body: captionBody,
-            photoId: photoId
+            photoId: photoId,
+            userId: userId
         })
         .then(caption => {
             res.status(201).json({

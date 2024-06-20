@@ -6,7 +6,13 @@ const controller = require('../controllers/photo.controller')
 const {authMiddlewares} = require('../middlewares');
 
 photoRouter.get('/', controller.getAllPhotos)
-photoRouter.post('/', authMiddlewares.verifyToken, controller.addPhoto)
+photoRouter.post(
+    '/', 
+    [
+        authMiddlewares.verifyToken,
+        authMiddlewares.isAdmin
+    ],
+    controller.addPhoto)
 photoRouter.get('/:photoId', controller.getPhotoById)
 photoRouter.delete(
     '/:photoId', 

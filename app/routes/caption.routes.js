@@ -20,6 +20,12 @@ captionRouter.put(
     ],
     controller.updateCaption
     );
-captionRouter.delete('/:captionId', authMiddlewares.verifyToken, controller.deleteCaption);
+captionRouter.delete(
+    '/:captionId', 
+    [
+        authMiddlewares.verifyToken,
+        authMiddlewares.isCaptionOwner
+    ],
+    controller.deleteCaption);
 
 module.exports = captionRouter
