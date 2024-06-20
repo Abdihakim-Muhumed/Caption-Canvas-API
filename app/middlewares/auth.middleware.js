@@ -63,10 +63,44 @@ isAdmin = (req, res, next) => {
     })
 }
 
+isContestant = (req, res, next) => {
+    User.findByPk(req.headers["user-id"])
+    .then(user => {
+        if(!user){
+            res.status(403).json({
+                message: "User Id not provided!"
+            })
+        }
+        user.getRoles()
+        .then( roles => {
+            for(i=0; i<roles.length; i++){
+                if(roles[i].name === 'contestant'){
+                    next()
+                    return;
+                }
+
+            }
+            res.status(403).json({
+                message: "Unauthorized! Requires CONTESTANT role!"
+            })
+        })
+        .catch(err => {
+            res.status(500).json({
+                message: err.message
+            });
+        })
+    })
+    .catch(err => {
+        res.status(500).json({
+            message: err.message
+        });
+    })
+}
+
 
 const authMiddlewares = {
     verifyToken : verifyToken,
     isAdmin: isAdmin,
-
+    isContestant: isContestant
 }
 module.exports = authMiddlewares
