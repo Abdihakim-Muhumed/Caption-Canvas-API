@@ -40,7 +40,7 @@ isAdmin = (req, res, next) => {
         user.getRoles()
         .then(roles => {
             for(i=0; i<roles.length; i++){
-                if(roles[i].name == 'admin'){
+                if(roles[i].name ==='admin'){
                     next()
                     return;
                 }
@@ -97,10 +97,43 @@ isContestant = (req, res, next) => {
     })
 }
 
+isCaptionOwner = (req, res, next) => {
+    User.findByPk(req.headers["user-id"])
+    .then(user => {
+        if(!user){
+            res.status(403).json({
+                message: "User Id not provided!"
+            })
+        }
+        user.getCaptions()
+        .then(captions => {
+            for(i=0; i<captions.length; i++){
+                if(captions[i].userId === user.id){
+                    next()
+                    return;
+                }
+            }
+            res.status(403).json({
+                message: "Unauthorized! User is not owner of the Caption!"
+            })
+        })
+        .catch(err => {
+            res.status(500).json({
+                message: err.message
+            });
+        })
+    })
+    .catch(err => {
+        res.status(500).json({
+            message: err.message
+        });
+    })
+}
 
 const authMiddlewares = {
     verifyToken : verifyToken,
     isAdmin: isAdmin,
-    isContestant: isContestant
+    isContestant: isContestant,
+    isCaptionOwner: isCaptionOwner,
 }
 module.exports = authMiddlewares

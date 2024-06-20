@@ -12,7 +12,14 @@ captionRouter.post(
     ],
     controller.addNewCaption
     );
-captionRouter.put('/:captionId', authMiddlewares.verifyToken, controller.updateCaption);
+captionRouter.put(
+    '/:captionId',
+    [
+        authMiddlewares.verifyToken, 
+        authMiddlewares.isCaptionOwner,
+    ],
+    controller.updateCaption
+    );
 captionRouter.delete('/:captionId', authMiddlewares.verifyToken, controller.deleteCaption);
 
 module.exports = captionRouter
