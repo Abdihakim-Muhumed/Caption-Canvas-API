@@ -6,7 +6,8 @@ const jwt = require("jsonwebtoken");
 const config  = require('../config/auth.config');
 
 verifyToken = (req, res, next) => {
-    const token  = req.headers["x-access-token"];
+    const token  = req.cookies.accessToken;
+    console.log(token)
     if(!token){
         res.status(403).json({
             message: "No token provided!"
@@ -18,7 +19,7 @@ verifyToken = (req, res, next) => {
         (error, decoded) => {
             if(error){
                 res.status(401).json({
-                    message: "Unauthorized!"
+                    message: "Unauthorized! Invalid token!"
                 })
             }
             req.userId = decoded.indexOf;
@@ -29,7 +30,7 @@ verifyToken = (req, res, next) => {
 }
 
 isAdmin = (req, res, next) => {
-    const id = req.headers["user-id"];
+    const id = req.cookies.userId;
     User.findByPk(id)
     .then(user => {
         if(!user){
@@ -64,7 +65,7 @@ isAdmin = (req, res, next) => {
 }
 
 isContestant = (req, res, next) => {
-    User.findByPk(req.headers["user-id"])
+    User.findByPk(req.cookies.userId)
     .then(user => {
         if(!user){
             res.status(403).json({
@@ -98,7 +99,7 @@ isContestant = (req, res, next) => {
 }
 
 isCaptionOwner = (req, res, next) => {
-    User.findByPk(req.headers["user-id"])
+    User.findByPk(req.cookies.userId)
     .then(user => {
         if(!user){
             res.status(403).json({

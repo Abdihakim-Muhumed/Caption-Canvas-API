@@ -94,7 +94,7 @@ const signIn = (req, res) => {
             {
                 algorithm:'HS256',
                 allowInsecureKeySizes: true,
-                expiresIn: 86400
+                expiresIn: 86400,
             }
 
         )
@@ -104,13 +104,19 @@ const signIn = (req, res) => {
             for(i=0; i<roles.length; i++){
                 userRoles.push("ROLE_" + roles[i].name.toUpperCase())
             }
+            res.cookie("accessToken",token,{
+                maxAge: 90000,
+                httpOnly: true,
+                secure: true,
+                sameSite: "strict",
+            })
+            res.cookie("userId", user.id)
             res.status(200).json({
                 id: user.id,
                 username: user.username,
                 fullName: user.fullName,
                 email: user.email,
                 roles: userRoles,
-                accessToken: token
             })
         })
         .catch(err => {
