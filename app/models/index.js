@@ -21,6 +21,7 @@ db.user = require('./user.model')(sequelize, Sequelize)
 db.role = require('./role.model')(sequelize, Sequelize)
 db.caption = require('./caption.model')(sequelize, Sequelize)
 db.photo = require('./photo.model')(sequelize, Sequelize)
+db.vote = require('./vote.model')(sequelize, Sequelize)
 
 db.role.belongsToMany(db.user, {
     through: "user_roles",
@@ -39,6 +40,12 @@ db.caption.belongsTo(db.user);
 
 db.user.hasMany(db.photo);
 db.photo.belongsTo(db.user);
+
+db.user.hasMany(db.vote);
+db.vote.belongsTo(db.user);
+
+db.caption.hasMany(db.vote);
+db.vote.belongsTo(db.caption);
 
 module.exports = db;
 try{
