@@ -104,13 +104,27 @@ const signIn = (req, res) => {
             for(i=0; i<roles.length; i++){
                 userRoles.push("ROLE_" + roles[i].name.toUpperCase())
             }
-            res.cookie("accessToken",token,{
-                maxAge: 90000,
-                httpOnly: true,
-                secure: true,
-                sameSite: "strict",
-            })
-            res.cookie("userId", user.id)
+            res.cookie(
+                "accessToken",
+                token,
+                {
+                    maxAge: 90000,
+                    httpOnly: true,
+                    secure: true,
+                    sameSite: "strict",
+                }
+            )
+            res.cookie(
+                "userId", 
+                user.id,
+                {
+                    path: '/',
+                    maxAge: 90000,
+                    httpOnly: true,
+                    secure: true,
+                    sameSite: "strict",
+                }
+            )
             res.status(200).json({
                 id: user.id,
                 username: user.username,
@@ -133,9 +147,24 @@ const signIn = (req, res) => {
     })
 }
 const signOut = (req, res) => {
-    
+    res.clearCookie(
+        "accessToken",
+        {
+            expires: new Date(1),
+            path: '/'
+        }
+    )
+    res.clearCookie(
+        "userId",
+        {
+            expires: new Date(1),
+            path: '/'
+        }
+    )
+    res.status(200).send("User Logged Out!");
 }
 module.exports = {
     signUp,
-    signIn
+    signIn,
+    signOut
 }

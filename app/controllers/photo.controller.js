@@ -40,7 +40,7 @@ const getPhotoById =  (req, res) => {
 }
 const addPhoto = (req, res) => {
     const {photo_url, description} = req.query
-    const id = req.headers["user-id"]
+    const id = req.cookies.userId
     Photo.create({
         photo_url: photo_url, 
         description:description,
