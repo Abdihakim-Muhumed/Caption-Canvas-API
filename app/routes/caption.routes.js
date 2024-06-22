@@ -28,4 +28,12 @@ captionRouter.delete(
     ],
     controller.deleteCaption);
 
+captionRouter.post(
+    '/vote/:captionId',
+    [
+        authMiddlewares.verifyToken
+    ],
+    controller.voteForCaption
+)
+
 module.exports = captionRouter

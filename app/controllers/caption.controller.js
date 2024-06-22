@@ -1,7 +1,7 @@
 const db = require('../models');
 const Photo = db.photo;
 const Caption = db.caption;
-
+const Vote = db.vote;
 
 const getPhotoCaptions = (req, res) => {
     Photo.findByPk(req.params.photoId)
@@ -11,10 +11,16 @@ const getPhotoCaptions = (req, res) => {
                 message: "Photo does not exist!"
             })
         }
-        photo.getCaptions().then(captions => {
+        photo.getCaptions()
+        .then(captions => {
             res.status(200).json({
                 captions: captions,
             })
+        })
+        .catch(err => {
+            res.status(500).json({
+                message: err.message
+            });
         })
     })
 }
@@ -110,9 +116,67 @@ const deleteCaption = (req, res) => {
         })
     })
 }
+
+const voteForCaption = (req, res) => {
+    const userId = req.cookies.userId
+    const captionId = req.params.captionId
+
+    Caption.findByPk(captionId)
+    .then(caption => {
+        caption.getVotes()
+        .then(votes => {
+            for(i=0; i<votes.length; i++){
+                if(votes[i].userId == userId){
+                    res.status(403).json({
+                        message: "User already voted for this caption!"
+                    })
+                }
+            }
+            Vote.create({
+                userId: userId,
+                captionId: captionId
+            })
+            .then(vote => {
+                let newVotes = caption.totalVotes + 1;
+                caption.update({
+                    totalVotes: newVotes
+                })
+                .then(caption => {
+                    res.status(201).json({
+                        message: "Vote added successfully!",
+                        caption: caption,
+                    })
+                })
+                .catch(err => {
+                    res.status(500).json({
+                        message: err.message
+                    })
+                })
+            })
+            .catch(err => {
+                res.status(500).json({
+                    message: err.message
+                })
+            })
+
+        })
+        .catch(err => {
+            res.status(500).json({
+                message: err.message
+            })
+        })
+    })
+    .catch(err => {
+        res.status(500).json({
+            message: err.message
+        })
+    })
+}
+
 module.exports = {
     getPhotoCaptions,
     addNewCaption,
     updateCaption,
-    deleteCaption
+    deleteCaption,
+    voteForCaption,
 }

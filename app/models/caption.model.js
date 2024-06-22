@@ -13,8 +13,9 @@ module.exports = (sequelize, Sequelize) => {
                 type: DataTypes.STRING,
                 allowNUll: false
             },
-            votes:{
-                type: DataTypes.FLOAT
+            totalVotes:{
+                type: DataTypes.FLOAT,
+                defaultValue: 0,
             }
 
         }

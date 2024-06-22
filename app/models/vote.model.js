@@ -1,5 +1,4 @@
 const { Sequelize, DataTypes } = require("sequelize");
-const { sequelize } = require(".");
 
 module.exports = (sequelize, Sequelize) => {
     const Vote = sequelize.define(
@@ -12,4 +11,5 @@ module.exports = (sequelize, Sequelize) => {
             },
         }
     )
+    return Vote;
 }
