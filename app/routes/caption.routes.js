@@ -35,5 +35,12 @@ captionRouter.post(
     ],
     controller.voteForCaption
 )
+captionRouter.post(
+    '/unvote/:captionId',
+    [
+        authMiddlewares.verifyToken
+    ],
+    controller.unVoteCaption
+)
 
 module.exports = captionRouter

@@ -7,7 +7,6 @@ const config  = require('../config/auth.config');
 
 verifyToken = (req, res, next) => {
     const token  = req.cookies.accessToken;
-    console.log(token)
     if(!token){
         res.status(403).json({
             message: "No token provided!"
@@ -57,7 +56,6 @@ isAdmin = (req, res, next) => {
         })
     })
     .catch(err => {
-        console.log(err.message)
         res.status(500).json({
             message: err.message
         })

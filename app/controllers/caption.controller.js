@@ -173,10 +173,68 @@ const voteForCaption = (req, res) => {
     })
 }
 
+const unVoteCaption = (req, res) => {
+    const userId = req.cookies.userId
+    const captionId = req.params.captionId
+    Caption.findByPk(captionId)
+    .then(caption => {
+        caption.getVotes()
+        .then(votes => {
+            let vote = null;
+            for(i=0; i<votes.length; i++){
+                if(votes[i].userId == userId){
+                    vote = votes[i]
+                }
+            }
+            if(vote != null){
+                vote.destroy({
+                    truncate: true
+                })
+                .then(()=> {
+                    caption.decrement('totalVotes')
+                    .then(caption => {
+                        res.status(201).json({
+                            message: "Caption unvoted successfully!",
+                            caption: caption,
+                        })
+                    })
+                    .catch(err => {
+                        res.status(500).json({
+                            message: err.message
+                        })
+                    })
+                })
+                .catch(err => {
+                    res.status(500).json({
+                        message: err.message
+                    })
+                })
+            }
+            else{
+                res.status(403).json({
+                    message: "User did not vote for this caption!"
+                })
+            }
+        })
+        .catch(err => {
+            res.status(500).json({
+                message: err.message
+            })
+        })
+        
+    })
+    .catch(err => {
+        res.status(500).json({
+            message: err.message
+        })
+    })
+}
+
 module.exports = {
     getPhotoCaptions,
     addNewCaption,
     updateCaption,
     deleteCaption,
     voteForCaption,
+    unVoteCaption
 }
