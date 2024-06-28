@@ -1,6 +1,6 @@
 const authMiddlewares = require('./auth.middleware');
-const validateMiddlewares = require('./validators.middleware')
+const validators = require('./validate.middleware')
 module.exports = {
     authMiddlewares,
-    validateMiddlewares
+    validators
 }
