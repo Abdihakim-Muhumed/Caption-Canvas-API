@@ -25,15 +25,17 @@ const getPhotoById =  (req, res) => {
             })
         })
         .catch(err => {
-            res.status(500).send({
-                message: err.message
+            console.log(err.message)
+            res.status(500).json({
+                message: "Internal Server Error"
             })
         });
         
     })
     .catch(err => {
-        res.status(500).send({
-            message: err.message
+        console.log(err.message)
+        res.status(500).json({
+            message: "Internal Server Error"
         })
     });
 
@@ -52,8 +54,9 @@ const addPhoto = (req, res) => {
         })
     })
     .catch(err => {
-        res.status(500).send({
-            message: err.message
+        console.log(err.message)
+        res.status(500).json({
+            message: "Internal Server Error"
         })
     });
 }
@@ -75,15 +78,17 @@ const deletePhoto = (req, res) => {
             })
         })
         .catch(err => {
+            console.log(err.message)
             res.status(500).json({
-                message: err.message
+                message: "Internal Server Error"
             })
         })
         
     })
     .catch(err => {
+        console.log(err.message)
         res.status(500).json({
-            message: err.message
+            message: "Internal Server Error"
         })
     })
     

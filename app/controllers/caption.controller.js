@@ -18,9 +18,10 @@ const getPhotoCaptions = (req, res) => {
             })
         })
         .catch(err => {
+            console.log(err.message)
             res.status(500).json({
-                message: err.message
-            });
+                message: "Internal Server Error"
+            })
         })
     })
 }
@@ -49,8 +50,9 @@ const addNewCaption = (req, res) => {
             })
         })
         .catch( err => {
+            console.log(err.message)
             res.status(500).json({
-                message: err.message
+                message: "Internal Server Error"
             })
         })
 
@@ -76,14 +78,16 @@ const updateCaption = (req, res) => {
             })
         })
         .catch(err => {
+            console.log(err.message)
             res.status(500).json({
-                message: err.message
+                message: "Internal Server Error"
             })
         })
     })
     .catch(err => {
+        console.log(err.message)
         res.status(500).json({
-            message: err.message
+            message: "Internal Server Error"
         })
     })
 }
@@ -105,14 +109,16 @@ const deleteCaption = (req, res) => {
             })
         })
         .catch(err => {
+            console.log(err.message)
             res.status(500).json({
-                message: err.message
+                message: "Internal Server Error"
             })
         })
     })
     .catch(err => {
+        console.log(err.message)
         res.status(500).json({
-            message: err.message
+            message: "Internal Server Error"
         })
     })
 }
@@ -148,27 +154,31 @@ const voteForCaption = (req, res) => {
                     })
                 })
                 .catch(err => {
+                    console.log(err.message)
                     res.status(500).json({
-                        message: err.message
+                        message: "Internal Server Error"
                     })
                 })
             })
             .catch(err => {
+                console.log(err.message)
                 res.status(500).json({
-                    message: err.message
+                    message: "Internal Server Error"
                 })
             })
 
         })
         .catch(err => {
+            console.log(err.message)
             res.status(500).json({
-                message: err.message
+                message: "Internal Server Error"
             })
         })
     })
     .catch(err => {
+        console.log(err.message)
         res.status(500).json({
-            message: err.message
+            message: "Internal Server Error"
         })
     })
 }
@@ -199,14 +209,16 @@ const unVoteCaption = (req, res) => {
                         })
                     })
                     .catch(err => {
+                        console.log(err.message)
                         res.status(500).json({
-                            message: err.message
+                            message: "Internal Server Error"
                         })
                     })
                 })
                 .catch(err => {
+                    console.log(err.message)
                     res.status(500).json({
-                        message: err.message
+                        message: "Internal Server Error"
                     })
                 })
             }
@@ -217,15 +229,17 @@ const unVoteCaption = (req, res) => {
             }
         })
         .catch(err => {
+            console.log(err.message)
             res.status(500).json({
-                message: err.message
+                message: "Internal Server Error"
             })
         })
         
     })
     .catch(err => {
+        console.log(err.message)
         res.status(500).json({
-            message: err.message
+            message: "Internal Server Error"
         })
     })
 }

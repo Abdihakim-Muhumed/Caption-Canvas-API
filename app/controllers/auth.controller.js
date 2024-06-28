@@ -52,14 +52,15 @@ const signUp = (req, res) => {
             .catch(err => {
                 console.log(err.message)
                 res.status(500).json({
-                    message: err.message
+                    message: "Internal Server Error"
                 })
             })
         }
     })
     .catch(err => {
+        console.log(err.message)
         res.status(500).json({
-            message: err.message
+            message: "Internal Server Error"
         })
     })
 }
@@ -135,8 +136,9 @@ const signIn = (req, res) => {
             })
         })
         .catch(err => {
+            console.log(err.message)
             res.status(500).json({
-                message: err.message
+                message: "Internal Server Error"
             })
         })
         
@@ -144,7 +146,7 @@ const signIn = (req, res) => {
     .catch(err => {
         console.log(err.message)
         res.status(500).json({
-            message: err.message
+            message: "Internal Server Error"
         })
     })
 }
