@@ -5,7 +5,7 @@ const captionRouter = require('./app/routes/caption.routes');
 const authRouter = require('./app/routes/auth.routes')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
-
+const helmet = require('helmet')
 
 const app = express();
 
@@ -17,6 +17,7 @@ const corsOption = {
 }
 
 app.use(cors(corsOption))
+app.use(helmet())
 app.use(cookieParser());
 
 
