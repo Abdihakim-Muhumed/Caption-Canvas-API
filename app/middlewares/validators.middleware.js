@@ -11,6 +11,7 @@ const validateAuth = (req, res) => {
             errors: errors.array()
         })
     }
+    next()
 }
 
 const validators = {
