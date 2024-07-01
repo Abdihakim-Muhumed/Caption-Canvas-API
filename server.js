@@ -15,18 +15,53 @@ const corsOption = {
     preflightContinue: false,
     optionsSuccessStatus: 200
 }
-
 app.use(cors(corsOption))
+
 app.use(helmet())
 app.use(cookieParser());
 
+
+const swaggerJsDoc = require('swagger-jsdoc')
+const swaggerUi = require('swagger-ui-express')
+const path = require('path')
+const swaggerDefinition = {
+    openapi: "3.0.3",
+    info: {
+        title: "Caption Canvas API",
+        description: "The backend for Caption Canvas, a platform for users to participate in a photo caption contest.",
+        termsOfService: "http://swagger.io/terms/",
+        contact: {
+            email: "abdihakim.muhumedo@gmail.com"
+        },
+        license: {
+            name: "MIT",
+            url: "https://spdx.org/licenses/MIT.html"
+        },
+        version: "1.0.1"
+    },
+    externalDocs: {
+        description: "Find out more about Caption Canvas API here",
+        url: "https://github.com/Abdihakim-Muhumed/Caption-Canvas-API",
+        servers:{
+            url: "http://localhost/3000",
+            url: ""
+        }
+    }
+}
+const options = {
+    swaggerDefinition,
+    apis: [path.join(__dirname, './api-docs.yml')]
+}
+const swaggerSpec = swaggerJsDoc(options)
+
+app.use('/docs',swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 db.sequelize.sync().then(() => {
     console.log("Sync DB");
 })
 
 app.get('/', (req, res) => {
-    res.send("Welcome to Caption Canvas API!")
+    res.redirect(301, '/docs')
 });
 
 app.use('/api/photos/', photoRouter);

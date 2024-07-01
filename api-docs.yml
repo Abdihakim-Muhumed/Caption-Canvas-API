@@ -1,0 +1,449 @@
+tags:
+  - name: auth
+    description: All user authentication operations in the application.
+  - name: photos
+    description: All operations on the photos being captioned in the contest.
+  - name: captions
+    description: All operations on captions by contestant users for the photos.
+paths:
+  /api/auth/signup:
+    post:
+      tags:
+        - auth
+      summary: Registers a new user.
+      description: Creates a new user in the application with the required properties and roles
+      operationId: signUp
+      parameters:
+        - name: username
+          in: query
+          required: true 
+          description: Username which will be required during sign in.
+          schema:
+            type: string
+        - name: fullName
+          in: query
+          required: true 
+          description: Full name of the user
+          schema:
+            type: string
+        - name: email
+          in: query
+          required: false 
+          description: Email for the user.
+          schema:
+            type: string
+        - name: password
+          in: query
+          required: true 
+          description: Password which will be used for sign in
+          schema:
+            type: string
+        - name: roles
+          in: query
+          required: false
+          description: An array of roles[admin, contestant, user]. Default is user
+          type: array
+          collectionFormat: multi
+          
+      responses:
+        '201':
+          description: User registration successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid input
+        '403':
+          description: Forbidden operation
+        '500':
+          description: Internal Server Error          
+  /api/auth/signin:
+    post:
+      tags:
+        - auth
+      summary: Login a user.
+      description: Logs in a user in the application
+      operationId: signIn
+      parameters:
+        - name: username
+          in: query
+          required: true 
+          description: Username which will be required during sign in.
+          schema:
+            type: string
+        - name: password
+          in: query
+          required: true 
+          description: Password which will be used for sign in
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Operation successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: User not found.
+        '403':
+          description: Wrong password.
+        '500':
+          description: Internal Server Error
+  /api/auth/signout:
+    get:
+      tags:
+        - auth
+      summary: Logout a user.
+      description: Logs out a user in the application
+      operationId: signOut
+      responses:
+        '200':
+          description: User logged out successfully.
+        '500':
+          description: Internal Server Error
+  /api/photos:
+    get:
+      tags:
+        - photos
+      description: Retrieves all photos being captioned!
+      operationId: getAllPhotos
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+                schema:
+                  $ref: '#/components/schemas/Photo'
+        '500':
+          description: Server Error
+    post:
+      tags:
+        - photos
+      summary: Add a new photo. Requires ADMIN role.
+      description: Adds a new photo to be captioned by contestant users to the api and returns it
+      operationId: addNewPhoto
+      parameters:
+        - name: photo_url
+          in: query
+          description: A link to the photo on unsplash.
+          required: true 
+          schema:
+            type: string
+        - name: description
+          in: query
+          description: Describe the contents in the photo.
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Photo'
+        '400':
+          description: Invalid input 
+        '403':
+          description: No token provided
+        '500':
+          description: Internal Server Error   
+  /api/photos/{photoId}:
+    get:
+      tags:
+        - photos
+      summary: Find photo by ID.
+      description: Returns a single photo and all of its properties including captions.
+      operationId: getPhotoById
+      parameters:
+        - name: photoId
+          in: path
+          description: ID of photo to retrieve
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Photo'         
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Photo not found
+        '500':
+          description: Internal Server Error
+    delete:
+      tags:
+        - photos
+      summary: Delete a photo. Requires ADMIN role.
+      description: deletes a photo from the application
+      operationId: deletePhoto
+      parameters:
+        - name: id
+          in: path
+          description: Id of the photo to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Operation Successful
+        '400':
+          description: Invalid input
+        '404':
+          description: Photo not found
+        '500':
+          description: Internal Server Error      
+  /api/captions/{photoId}:
+    get:
+      tags:
+        - captions
+      summary: Get all captions of a photo.
+      description: Retrieves all caption of the photo whose id is provided.
+      operationId: getPhotoCaptions
+      parameters:
+        - name: photoId
+          in: path
+          description: ID of photo to retrieve captions for.
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+                schema:
+                  $ref: '#/components/schemas/Caption'
+        '404':
+          description: Photo not found
+        '500':
+          description: Internal Server Error
+    post:
+      tags:
+        - captions
+      summary: Add a new caption to a photo. Requires CONTESTANT role
+      description: Adds a new caption to the photo and returns it
+      operationId: addNewCaption
+      parameters:
+        - name: photoId
+          in: path
+          description: ID for the photo
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: body
+          in: query
+          required: true 
+          description: The caption content/body.
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Successful creation of the caption
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Caption'
+        '400':
+          description: Invalid input
+        '403':
+          description: Forbidden operation || Unauthorized! Requires CONTESTANT role!
+        '404':
+          description: Photo not found!
+        '500':
+          description: Internal Server Error
+  /api/captions/{captionId}:
+    put:
+      tags:
+        - captions
+      summary: Update a caption. Requires CONTESTANT role.
+      description: Updates the body of a caption
+      operationId: updateCaption
+      parameters:
+        - name: captionId
+          in: path
+          required: true 
+          description: Id of the caption to update.
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Operation Successful
+        '400':
+          description: Invalid input
+        '403':
+          description: No signin token provided
+        '404':
+          description: Caption not found
+        '500':
+          description: Internal Server Error
+    
+    delete:
+      tags:
+        - captions
+      summary: Delete a caption. Requires CONTESTANT role.
+      description: Deletes a caption of the provided id.
+      operationId: deleteCaption
+      parameters:
+        - name: captionId
+          in: path
+          required: true
+          description: Id of the caption to delete.
+          schema:
+             type: integer
+      responses:
+        '200':
+          description: Operation Successful
+        '400':
+          description: Invalid input
+        '404':
+          description: Caption not found
+        '500':
+          description: Internal Server Error
+  /api/captions/vote/{captionId}:
+    post:
+      tags:
+        - captions
+      summary: Vote for a caption. Requires login token
+      description: Increments the totalVotes of a caption by one.
+      operationId: voteForCaption
+      parameters:
+        - name: captionId
+          in: path
+          required: true 
+          description: Id of the caption to vote for.
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Operation Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Caption'
+        '400':
+          description: Invalid input
+        '403':
+          description: No signin token provided
+        '404':
+          description: Caption not found
+        '500':
+          description: Internal Server Error
+  /api/captions/unvote/{captionId}:
+    post:
+      tags:
+        - captions
+      summary: Unvote a caption. Requires login token
+      description: Increments the totalVotes of a caption by one.
+      operationId: unvoteForCaption
+      parameters:
+        - name: captionId
+          in: path
+          required: true 
+          description: Id of the caption to unvote.
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Operation Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Caption'
+        '400':
+          description: Invalid input
+        '403':
+          description: No signin token provided
+        '404':
+          description: Caption not found
+        '500':
+          description: Internal Server Error
+  
+components:
+  schemas:
+    Photo:
+      required:
+        - id
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        description:
+          type: string
+          example: Four men in blue suits seemingly joyous and celebrating.
+        photo_url:
+          type: string
+          example: https://unsplash.com/photos/a-man-in-a-blue-suit-and-tie-jumping-in-the-air-HKq2OqxUxmQ
+        createdAt:
+          type: date
+          example: 2024-06-15T15:05:43.914Z
+        updatedAt:
+          type: date
+          example: 2024-06-15T15:05:43.914Z
+        userId:
+          type: integer
+          format: int64
+          example: 2
+    Caption:
+      required:
+        - id
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        body:
+          type: string
+          example: Me and the boys when she says yes to polygamy.
+        totalVotes:
+          type: float
+          example: 0
+        photoId:
+          type: integer
+          format: int64
+          example: 2
+        userId:
+          type: integer
+          format: int64
+          example: 10
+        createdAt:
+          type: date
+          example: 2024-01-22T21:00:00.000Z
+        updatedAt:
+          type: date
+          example: 2024-06-15T15:05:43.914Z
+    User:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        username:
+          type: string
+          example: abdihakim1434
+        fullName:
+          type: string
+          example: Abdihakim Muhumed
+        email:
+          type: string
+          example: abdihakim1434@gmail.com
+        password:
+          type: string
+          example: pAss@1234
+

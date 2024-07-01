@@ -32,13 +32,13 @@ const signUp = (req, res) => {
                 })
                 .catch(err => {
                     res.status(500).json({
-                        message: err.message
+                        message: "Internal Server Error!"
                     })
                 })
             })
             .catch(err => {
                 res.status(500).json({
-                    message: err.message
+                    message: 'Internal Server Error!'
                 })
             })
         }
@@ -73,7 +73,7 @@ const signIn = (req, res) => {
     })
     .then(user => {
         if(!user){
-            res.status(403).json({
+            res.status(404).json({
                 message: "Invalid username!"
             })
         }

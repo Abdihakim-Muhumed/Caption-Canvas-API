@@ -27,15 +27,15 @@ const getPhotoCaptions = (req, res) => {
 }
 
 const addNewCaption = (req, res) => {
-    const captionBody = req.query.captionBody;
+    const captionBody = req.query.body;
     const photoId = req.params.photoId;
     const userId = req.headers["user-id"];
 
     Photo.findByPk(photoId)
     .then(photo => {
         if(!photo){
-            res.status(403).json({
-                message: "Cannot add caption to a non-existant photo"
+            res.status(404).json({
+                message: "Photo does not exist!"
             })
         }
         Caption.create({

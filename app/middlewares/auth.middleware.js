@@ -11,6 +11,7 @@ verifyToken = (req, res, next) => {
         res.status(403).json({
             message: "No token provided!"
         })
+        return
     }
     jwt.verify(
         token,
