@@ -59,7 +59,7 @@ app.use('/docs',swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 db.sequelize.sync().then(() => {
     console.log("Sync DB");
 })
-
+db.initial()
 app.get('/', (req, res) => {
     res.redirect(301, '/docs')
 });
