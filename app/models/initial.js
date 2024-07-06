@@ -23,5 +23,5 @@ function initial() {
         console.log(err.message)
     })
 }
-
+initial()
 module.exports = initial

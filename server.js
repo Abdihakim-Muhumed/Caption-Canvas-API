@@ -6,6 +6,7 @@ const authRouter = require('./app/routes/auth.routes')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
 const helmet = require('helmet')
+const initial = require('./app/models/initial')
 
 const app = express();
 
@@ -58,8 +59,8 @@ app.use('/docs',swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 db.sequelize.sync().then(() => {
     console.log("Sync DB");
+    initial()
 })
-db.initial()
 app.get('/', (req, res) => {
     res.redirect(301, '/docs')
 });
