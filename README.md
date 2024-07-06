@@ -2,7 +2,7 @@
 # Author: Abdihakim Muhumed.
 This is the backend for Caption Canvas. A platform that enables users to participate in a photo caption contest. 
 # Live Demo:
-//[Click this link to view the API](http://)
+//[Click this link to view the API](https://caption-canvas-api.onrender.com/)
 
 # Technologies Used
  1. Node JS
