@@ -12,7 +12,7 @@ This is the backend for Caption Canvas. A platform that enables users to partici
  5. Postman
  6. Sequelize ORM
  7. DBdiagram
- 8. 
+ 8. JWT
  # Contact:
 
  Email: abdihakim.muhumedo@gmail.com 
