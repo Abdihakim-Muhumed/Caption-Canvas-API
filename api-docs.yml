@@ -42,9 +42,9 @@ paths:
           in: query
           required: false
           description: An array of roles[admin, contestant, user]. Default is user
-          type: array
-          collectionFormat: multi
-          
+          schema:
+            type: array
+            collectionFormat: multi          
       responses:
         '201':
           description: User registration successful
