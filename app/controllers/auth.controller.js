@@ -31,12 +31,14 @@ const signUp = (req, res) => {
                     })
                 })
                 .catch(err => {
+                    console.log(err.message)
                     res.status(500).json({
                         message: "Internal Server Error!"
                     })
                 })
             })
             .catch(err => {
+                console.log(err.message)
                 res.status(500).json({
                     message: 'Internal Server Error!'
                 })
