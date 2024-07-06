@@ -41,10 +41,13 @@ paths:
         - name: roles
           in: query
           required: false
-          description: An array of roles[admin, contestant, user]. Default is user
+          description: An array of roles. Default is user
           schema:
             type: array
-            collectionFormat: multi          
+            items:
+              type: string
+            example: ["admin", "contestant", "user"]  
+            collectionFormat: multi        
       responses:
         '201':
           description: User registration successful

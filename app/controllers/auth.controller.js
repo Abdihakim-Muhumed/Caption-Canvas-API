@@ -7,49 +7,68 @@ const config = require('../config/auth.config')
 const jwt = require('jsonwebtoken');
 
 const signUp = (req, res) => {
-    User.create({
-        username: req.query.username,
-        fullName: req.query.fullName,
-        email: req.query.email,
-        password: bcrypt.hashSync(req.query.password, 8)
-    })
-    .then( user => {
-        if(req.query.roles){
-            Role.findAll({
-                where: {
-                    name: {
-                        [Op.or]: req.query.roles
-                    }
-                }
-            })
-            .then(roles => {
-                console.log(roles)
-                user.setRoles(roles)
-                .then(() => {
-                    res.status(201).json({
-                        message: "User registration successful!"
-                    })
-                })
-                .catch(err => {
-                    console.log(err.message)
-                    res.status(500).json({
-                        message: "Internal Server Error!"
-                    })
-                })
-            })
-            .catch(err => {
-                console.log(err.message)
-                res.status(500).json({
-                    message: 'Internal Server Error!'
-                })
-            })
+    User.findOne({
+        where: {
+            username: req.query.username
         }
-        else{
-            user.setRoles([1])
-            .then(() => {
-                res.status(201).json({
-                    message: "User registration successful!"
-                })
+    }).then(user => {
+        if(user){
+            res.status(403).json({
+                message: 'User already registered! Sign in.'
+            })
+        }else{
+            User.create({
+                username: req.query.username,
+                fullName: req.query.fullName,
+                email: req.query.email,
+                password: bcrypt.hashSync(req.query.password, 8)
+            })
+            .then( user => {
+                if(req.query.roles){
+                    console.log(req.query.roles)
+                    Role.findAll({
+                        where: {
+                            name: {
+                                [Op.or]: req.query.roles
+                            }
+                        }
+                    })
+                    .then(roles => {
+                        console.log(roles)
+                        user.setRoles(roles)
+                        .then(() => {
+                            res.status(201).json({
+                                message: "User registration successful!"
+                            })
+                        })
+                        .catch(err => {
+                            console.log(err.message)
+                            res.status(500).json({
+                                message: "Internal Server Error!"
+                            })
+                        })
+                    })
+                    .catch(err => {
+                        console.log(err.message)
+                        res.status(500).json({
+                            message: 'Internal Server Error!'
+                        })
+                    })
+                }
+                else{
+                    user.setRoles([1])
+                    .then(() => {
+                        res.status(201).json({
+                            message: "User registration successful!"
+                        })
+                    })
+                    .catch(err => {
+                        console.log(err.message)
+                        res.status(500).json({
+                            message: "Internal Server Error"
+                        })
+                    })
+                }
             })
             .catch(err => {
                 console.log(err.message)
@@ -57,13 +76,8 @@ const signUp = (req, res) => {
                     message: "Internal Server Error"
                 })
             })
+
         }
-    })
-    .catch(err => {
-        console.log(err.message)
-        res.status(500).json({
-            message: "Internal Server Error"
-        })
     })
 }
 
