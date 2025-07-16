@@ -1,19 +1,64 @@
-# Caption Canvas API
-# Author: Abdihakim Muhumed.
-This is the backend for Caption Canvas. A platform that enables users to participate in a photo caption contest. 
-# Live Demo:
-[Click this link to view the API](https://caption-canvas-api.onrender.com/)
+# 🎨 Caption Canvas API
 
-# Technologies Used
- 1. Node JS
- 2. Express
- 3. PostgreSQL
- 4. Render
- 5. Postman
- 6. Sequelize ORM
- 7. DBdiagram
- 8. JWT
- # Contact:
+> A secure, scalable, and role-based backend API built with Node.js, Express, and Sequelize.
+
+Caption Canvas is a RESTful backend service that powers caption-based content creation and management. It features secure user authentication, dynamic role assignment, and robust endpoint access control—making it ideal for media platforms, education tools, or collaborative apps.
+
+## 🚀 Features
+
+- ✅ **Secure JWT Authentication**  
+  Token-based login with hashed passwords, HTTP-only cookies, and 1-day session expiration.
+
+- 🔐 **Role-Based Access Control (RBAC)**  
+  Users are assigned roles like `admin`, `contestant`, or `user` with enforced backend permissions.
+
+- 📚 **Live API Documentation**  
+  Explore and test the API via Swagger UI:  
+  [`/docs`](https://caption-canvas-api.onrender.com/docs/)
+
+- ⚙️ **Modular and Scalable Codebase**  
+  Clean folder structure (controllers, models, routes) following best practices for maintainability.
+
+- 🧩 **Sequelize ORM Integration**  
+  Models and relationships for `User`, `Role`, `Caption`, and `Media` entities.
+
+- 🛡️ **Security-First Design**  
+  Secure cookies (`httpOnly`, `sameSite`, `secure`) and backend-enforced session protection.
+
+- 🧠 **Smart Role Handling**  
+  The `user` role is auto-assigned and cannot be removed—ensuring every user has base-level access.
+
+## 📦 Tech Stack
+
+- **Node.js** + **Express**
+- **Sequelize** (PostgreSQL)
+- **JWT** for authentication
+- **Bcrypt** for password hashing
+- **Swagger** for API docs
+- **Render.com** for deployment
+
+## 📂 Folder Structure
+📦 caption-canvas-api/
+
+    ┣ 📁 app/
+    
+        ┣ 📁 controllers/
+
+        ┣ 📁 models/
+
+        ┣ 📁 routes/
+
+        ┣ 📁 config/
+
+        ┣ 📁 middleware/
+
+    ┣ 📄 api-docs.yaml
+
+    ┣ 📄 server.js
+
+    ┣ 📄 README.md
+
+# Contact:
 
  Email: abdihakim.muhumedo@gmail.com 
 
