@@ -24,56 +24,52 @@ const signUp = (req, res) => {
                 password: bcrypt.hashSync(req.query.password, 8)
             })
             .then( user => {
-                if(req.query.roles){
-                    console.log(req.query.roles)
-                    Role.findAll({
-                        where: {
-                            name: {
-                                [Op.or]: req.query.roles
-                            }
-                        }
-                    })
-                    .then(roles => {
-                        console.log(roles)
-                        user.setRoles(roles)
+                let roles = req.query.roles;
+
+                // Normalize roles input to an array
+                if (!roles) {
+                    roles = ['user'];
+                } else if (typeof roles === 'string') {
+                    roles = [roles]; // convert single role string to array
+                }
+
+                // Ensure 'user' role is always included
+                if (!roles.includes('user')) {
+                    roles.push('user');
+                }
+                // Find roles from DB
+                Role.findAll({
+                    where: {
+                    name: {
+                        [Op.or]: roles
+                    }
+                    }
+                })
+                    .then(foundRoles => {
+                    user.setRoles(foundRoles)
                         .then(() => {
-                            res.status(201).json({
-                                message: "User registration successful!"
-                            })
+                        return res.status(201).json({
+                            message: "User registration successful!"
+                        });
                         })
                         .catch(err => {
-                            console.log(err.message)
-                            res.status(500).json({
-                                message: "Internal Server Error!"
-                            })
-                        })
+                        console.error(err.message);
+                        return res.status(500).json({
+                            message: "Internal Server Error while setting roles."
+                        });
+                        });
                     })
                     .catch(err => {
-                        console.log(err.message)
-                        res.status(500).json({
-                            message: 'Internal Server Error!'
-                        })
-                    })
-                }
-                else{
-                    user.setRoles([1])
-                    .then(() => {
-                        res.status(201).json({
-                            message: "User registration successful!"
-                        })
-                    })
-                    .catch(err => {
-                        console.log(err.message)
-                        res.status(500).json({
-                            message: "Internal Server Error"
-                        })
-                    })
-                }
+                    console.error(err.message);
+                    return res.status(500).json({
+                        message: "Internal Server Error while retrieving roles."
+                    });
+                });
             })
             .catch(err => {
                 console.log(err.message)
                 res.status(500).json({
-                    message: "Internal Server Error"
+                    message: "Internal Server Error while creating user."
                 })
             })
 

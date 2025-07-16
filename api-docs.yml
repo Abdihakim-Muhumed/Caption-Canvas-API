@@ -41,13 +41,17 @@ paths:
         - name: roles
           in: query
           required: false
-          description: An array of roles. Default is user
+          description: Roles to assign to the user. 
+                      The `"user"` role is always required and is automatically added by the server.
+                      You may add other roles like `"admin"` or `"contestant"`.
           schema:
             type: array
             items:
               type: string
-            example: ["admin", "contestant", "user"]  
-            collectionFormat: multi        
+              enum: [admin, contestant]  # Only extra roles selectable; "user" is implied and forced in backend
+            example: ["admin", "contestant"]
+          style: form
+          explode: true       
       responses:
         '201':
           description: User registration successful
