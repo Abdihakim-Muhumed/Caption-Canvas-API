@@ -29,7 +29,7 @@ const getPhotoCaptions = (req, res) => {
 const addNewCaption = (req, res) => {
     const captionBody = req.query.body;
     const photoId = req.params.photoId;
-    const userId = req.headers["user-id"];
+    const userId = req.cookies.userId
 
     Photo.findByPk(photoId)
     .then(photo => {
