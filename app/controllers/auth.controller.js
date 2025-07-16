@@ -126,7 +126,7 @@ const signIn = (req, res) => {
                 "accessToken",
                 token,
                 {
-                    maxAge: 90000,
+                    maxAge: 86400000,
                     httpOnly: true,
                     secure: true,
                     sameSite: "strict",
@@ -137,7 +137,7 @@ const signIn = (req, res) => {
                 user.id,
                 {
                     path: '/',
-                    maxAge: 90000,
+                    maxAge: 86400000,
                     httpOnly: true,
                     secure: true,
                     sameSite: "strict",

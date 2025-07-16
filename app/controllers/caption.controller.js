@@ -129,6 +129,11 @@ const voteForCaption = (req, res) => {
 
     Caption.findByPk(captionId)
     .then(caption => {
+        if(!caption){
+            res.status(404).json({
+                message: "Invalid Caption Id"
+            })
+        }
         caption.getVotes()
         .then(votes => {
             for(i=0; i<votes.length; i++){
@@ -188,6 +193,11 @@ const unVoteCaption = (req, res) => {
     const captionId = req.params.captionId
     Caption.findByPk(captionId)
     .then(caption => {
+        if(!caption){
+            res.status(404).json({
+                message: "Invalid Caption Id"
+            })
+        }
         caption.getVotes()
         .then(votes => {
             let vote = null;
