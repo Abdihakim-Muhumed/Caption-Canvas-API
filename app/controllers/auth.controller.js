@@ -112,7 +112,7 @@ const signIn = (req, res) => {
             {
                 algorithm:'HS256',
                 allowInsecureKeySizes: true,
-                expiresIn: 86400,
+                expiresIn: 86400000,
             }
 
         )
